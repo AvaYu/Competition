@@ -18,7 +18,7 @@ namespace MarsFramework.Pages
 			PageFactory.InitElements(Global.GlobalDefinitions.driver, this);
 		}
 
-		internal void DeleteSkill()
+		internal void DeleteLastPage()
 		{
 			// Click Manage Listings tab
 			GlobalDefinitions.driver.FindElement(By.XPath("//a[contains(text(),'Manage Listings')]")).Click();
@@ -50,8 +50,6 @@ namespace MarsFramework.Pages
 			// Verify if seller is able to navigate to the previous page
 			int newLastPageButtonText = Convert.ToInt32(GlobalDefinitions.driver.FindElement(By.XPath("//div[contains(@class, 'pagination')]//button[contains(@class,'currentPage')]")).Text);
 			Assert.That(newLastPageButtonText == lastPageButtonNumber - 1);
-
-			
 		}
 	}
 }

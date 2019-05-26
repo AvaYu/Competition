@@ -18,34 +18,29 @@ namespace MarsFramework.Pages
 			PageFactory.InitElements(Global.GlobalDefinitions.driver, this);
 		}
 
-		internal void ValidSkill()
+		private static void AddNewSkill(string title, string description, string category, string subcategory, string tags, string credit)
 		{
 			// Click on the Share Skill button
 			GlobalDefinitions.driver.FindElement(By.XPath("//section[@class='nav-secondary']//a[contains(@class,'button')][contains(text(),'Share Skill')]")).Click();
 
-			//Populate the Excel Sheet
-			GlobalDefinitions.ExcelLib.PopulateInCollection(Base.ExcelPath, "ShareSkill");
+			// Wait for fields to load
 			Thread.Sleep(1000);
 
 			// Input Testing into the Title field
-			IWebElement title = GlobalDefinitions.driver.FindElement(By.Name("title"));
-			title.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Title"));
+			GlobalDefinitions.driver.FindElement(By.Name("title")).SendKeys(title);
 
 			// Input Selenium into the Description field
-			IWebElement description = GlobalDefinitions.driver.FindElement(By.Name("description"));
-			description.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Description"));
+			GlobalDefinitions.driver.FindElement(By.Name("description")).SendKeys(description);
 
 			// Choose Category as Business
-			IWebElement category = GlobalDefinitions.driver.FindElement(By.Name("categoryId"));
-			category.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Category"));
+			GlobalDefinitions.driver.FindElement(By.Name("categoryId")).SendKeys(category);
 
 			// Choose Subcategory as Market Advice
-			IWebElement subcategory = GlobalDefinitions.driver.FindElement(By.Name("subcategoryId"));
-			subcategory.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Subcategory"));
+			GlobalDefinitions.driver.FindElement(By.Name("subcategoryId")).SendKeys(subcategory);
 
 			// Input Automation into the Tags field and press Enter key
 			IWebElement tag = GlobalDefinitions.driver.FindElement(By.XPath("(//input[@type='text'][@placeholder='Add new tag'])[1]"));
-			tag.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Tags"));
+			tag.SendKeys(tags);
 			tag.SendKeys(Keys.Enter);
 
 			// Tick One-off service option of Service Type
@@ -59,7 +54,7 @@ namespace MarsFramework.Pages
 
 			// Input 10 into price field
 			IWebElement creditprice = GlobalDefinitions.driver.FindElement(By.Name("charge"));
-			creditprice.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Credit"));
+			creditprice.SendKeys(credit);
 
 			// Tick Hidden option of Active
 			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='isActive'][@value='false']")).Click();
@@ -68,64 +63,34 @@ namespace MarsFramework.Pages
 			GlobalDefinitions.driver.FindElement(By.XPath("//input[@type='button'][@value='Save']")).Click();
 
 			Thread.Sleep(500);
-
-			// Verify if add the skill successfully and navigate to ListingManagement
-			Assert.IsNotNull(GlobalDefinitions.driver.FindElement(By.XPath("//h2[contains(text(),'Manage Listings')]")));
 		}
 
-		internal void InvalidSkill()
+		internal void SaveValidSkill()
 		{
-			// Click on the Share Skill button
-			GlobalDefinitions.driver.FindElement(By.XPath("//section[@class='nav-secondary']//a[contains(@class,'button')][contains(text(),'Share Skill')]")).Click();
-
-			//Populate the Excel Sheet
+			// Populate the Excel Sheet
 			GlobalDefinitions.ExcelLib.PopulateInCollection(Base.ExcelPath, "ShareSkill");
-			Thread.Sleep(1000);
 
-			// Input C# into the Title field
-			IWebElement title = GlobalDefinitions.driver.FindElement(By.Name("title"));
-			title.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Title"));
+			AddNewSkill(
+				GlobalDefinitions.ExcelLib.ReadData(2, "Title"), 
+				GlobalDefinitions.ExcelLib.ReadData(2, "Description"), 
+				GlobalDefinitions.ExcelLib.ReadData(2, "Category"),
+				GlobalDefinitions.ExcelLib.ReadData(2, "Subcategory"),
+				GlobalDefinitions.ExcelLib.ReadData(2, "Tags"),
+				GlobalDefinitions.ExcelLib.ReadData(2, "Credit"));
+		}
 
-			// Input [Test Fixture] into the Description field
-			IWebElement description = GlobalDefinitions.driver.FindElement(By.Name("description"));
-			description.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Description"));
+		internal void SaveInvalidSkill()
+		{
+			// Populate the Excel Sheet
+			GlobalDefinitions.ExcelLib.PopulateInCollection(Base.ExcelPath, "ShareSkill");
 
-			// Choose Category as Digital Marketing
-			IWebElement category = GlobalDefinitions.driver.FindElement(By.Name("categoryId"));
-			category.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Category"));
-
-			// Choose Subcategory as Video Marketing
-			IWebElement subcategory = GlobalDefinitions.driver.FindElement(By.Name("subcategoryId"));
-			subcategory.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Subcategory"));
-
-			// Input C# into the Tags field and press Enter key
-			IWebElement tag = GlobalDefinitions.driver.FindElement(By.XPath("(//input[@type='text'][@placeholder='Add new tag'])[1]"));
-			tag.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Tags"));
-			tag.SendKeys(Keys.Enter);
-
-			// Tick Hourly basis service option of Service Type
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='serviceType'][@value='0']")).Click();
-
-			// Tick Online option of Location Type
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='locationType'][@value='1']")).Click();
-
-			// Tick Skill-exchange option of Skill Trade
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='skillTrades'][@value='true']")).Click();
-
-			// Input Java into the Skill-Exchange field and press enter key
-			IWebElement skillexchange = GlobalDefinitions.driver.FindElement(By.XPath("(//input[@type='text'][@placeholder='Add new tag'])[2]"));
-			skillexchange.SendKeys(GlobalDefinitions.ExcelLib.ReadData(3, "Skill-Exchange"));
-			skillexchange.SendKeys(Keys.Enter);
-
-			// Tick Active option of Active
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='isActive'][@value='true']")).Click();
-
-			// Click on the Save button
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@type='button'][@value='Save']")).Click();
-
-			// Verify if add the skill successfully
-			IWebElement actualtext = GlobalDefinitions.driver.FindElement(By.XPath("//div[contains(@class,'ns-type-error')]"));
-			Assert.That(actualtext.Text, Is.EqualTo("Please complete the form correctly."));
+			AddNewSkill(
+				GlobalDefinitions.ExcelLib.ReadData(3, "Title"),
+				GlobalDefinitions.ExcelLib.ReadData(3, "Description"),
+				GlobalDefinitions.ExcelLib.ReadData(3, "Category"),
+				GlobalDefinitions.ExcelLib.ReadData(3, "Subcategory"),
+				GlobalDefinitions.ExcelLib.ReadData(3, "Tags"),
+				GlobalDefinitions.ExcelLib.ReadData(3, "Credit"));
 		}
 	}
 }

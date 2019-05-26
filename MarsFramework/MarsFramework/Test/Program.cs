@@ -1,9 +1,12 @@
-﻿using MarsFramework.Pages;
+﻿using MarsFramework.Global;
+using MarsFramework.Pages;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MarsFramework
@@ -26,36 +29,43 @@ namespace MarsFramework
 			}
 
 			[Test]
-			public void SaveValidService()
+			public void SaveValidSkill()
 			{
 				// Creates a toggle for the given test, adds all log events under it    
-				test = extent.StartTest("Save a valid service");
+				test = extent.StartTest("Save a valid skill");
 
-				// ShareSkill object and save a valid service
+				// ShareSkill object and save a valid skill
 				ShareSkill obj = new ShareSkill();
-				obj.ValidSkill();
+				obj.SaveValidSkill();
+
+				// Verify if add the skill successfully and navigate to ListingManagement
+				Assert.IsNotNull(GlobalDefinitions.driver.FindElement(By.XPath("//h2[contains(text(),'Manage Listings')]")));
 			}
 
 			[Test]
-			public void SaveInvalidService()
+			public void SaveInvalidSkill()
 			{
 				// Creates a toggle for the given test, adds all log events under it    
-				test = extent.StartTest("Save an invalid service");
+				test = extent.StartTest("Save an invalid skill");
 
-				// ShareSkill object and save an invalid service
+				// ShareSkill object and save an invalid skill
 				ShareSkill obj = new ShareSkill();
-				obj.InvalidSkill();			
+				obj.SaveInvalidSkill();
+
+				// Verify if add the skill successfully
+				IWebElement actualtext = GlobalDefinitions.driver.FindElement(By.XPath("//div[contains(@class,'ns-type-error')]"));
+				Assert.That(actualtext.Text, Is.EqualTo("Please complete the form correctly."));
 			}
 
 			[Test]
-			public void DeleteLastService()
+			public void DeleteLastSkill()
 			{
 				// Creates a toggle for the given test, adds all log events under it    
-				test = extent.StartTest("Delete the last service");
+				test = extent.StartTest("Delete the last skill");
 
-				// ManageListings object and delete the last service of the last page
+				// ManageListings object and delete all of the skill listings on the last page
 				ManageListings obj = new ManageListings();
-				obj.DeleteSkill();
+				obj.DeleteLastPage();
 			}
 		}
 	}
