@@ -26,19 +26,19 @@ namespace MarsFramework.Pages
 			// Wait for fields to load
 			Thread.Sleep(1000);
 
-			// Input Testing into the Title field
+			// Input information into the Title field
 			GlobalDefinitions.driver.FindElement(By.Name("title")).SendKeys(title);
 
-			// Input Selenium into the Description field
+			// Input information into the Description field
 			GlobalDefinitions.driver.FindElement(By.Name("description")).SendKeys(description);
 
-			// Choose Category as Business
+			// Choose Category
 			GlobalDefinitions.driver.FindElement(By.Name("categoryId")).SendKeys(category);
 
-			// Choose Subcategory as Market Advice
+			// Choose Subcategory
 			GlobalDefinitions.driver.FindElement(By.Name("subcategoryId")).SendKeys(subcategory);
 
-			// Input Automation into the Tags field and press Enter key
+			// Input information into the Tags field and press Enter key
 			IWebElement tag = GlobalDefinitions.driver.FindElement(By.XPath("(//input[@type='text'][@placeholder='Add new tag'])[1]"));
 			tag.SendKeys(tags);
 			tag.SendKeys(Keys.Enter);
@@ -49,10 +49,23 @@ namespace MarsFramework.Pages
 			// Tick On-site option of Location Type
 			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='locationType'][@value='0']")).Click();
 
+			// Set Start date and End date of Available days
+			GlobalDefinitions.driver.FindElement(By.XPath("//input[@placeholder='Start date']")).SendKeys("01-06-2019");
+			GlobalDefinitions.driver.FindElement(By.XPath("//input[@placeholder='End date']")).SendKeys("30-06-2019");
+
+			// Tick all weekdays and choose Start time and End time of Available days
+
+			for (int i = 1; i <= 5; i++)
+			{
+				GlobalDefinitions.driver.FindElement(By.XPath("//div[@class='fields']//input[@name='Available'][@index='" + i + "']")).Click();
+				GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='StartTime'][@index='" + i + "']")).SendKeys("0900");
+				GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='EndTime'][@index='" + i + "']")).SendKeys("1700");
+			}
+
 			// Tick Credit option of Skill Trade
 			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='skillTrades'][@value='false']")).Click();
 
-			// Input 10 into price field
+			// Input number into price field
 			IWebElement creditprice = GlobalDefinitions.driver.FindElement(By.Name("charge"));
 			creditprice.SendKeys(credit);
 
@@ -71,8 +84,8 @@ namespace MarsFramework.Pages
 			GlobalDefinitions.ExcelLib.PopulateInCollection(Base.ExcelPath, "ShareSkill");
 
 			AddNewSkill(
-				GlobalDefinitions.ExcelLib.ReadData(2, "Title"), 
-				GlobalDefinitions.ExcelLib.ReadData(2, "Description"), 
+				GlobalDefinitions.ExcelLib.ReadData(2, "Title"),
+				GlobalDefinitions.ExcelLib.ReadData(2, "Description"),
 				GlobalDefinitions.ExcelLib.ReadData(2, "Category"),
 				GlobalDefinitions.ExcelLib.ReadData(2, "Subcategory"),
 				GlobalDefinitions.ExcelLib.ReadData(2, "Tags"),
