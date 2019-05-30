@@ -18,10 +18,14 @@ namespace MarsFramework.Pages
 			PageFactory.InitElements(Global.GlobalDefinitions.driver, this);
 		}
 
+		// Find the Manage Listings tab 
+		[FindsBy(How = How.XPath, Using = "//a[contains(text(),'Manage Listings')]")]
+		private IWebElement Managelistings { get; set; }
+		
 		internal void DeleteLastPage()
 		{
 			// Click Manage Listings tab
-			GlobalDefinitions.driver.FindElement(By.XPath("//a[contains(text(),'Manage Listings')]")).Click();
+			Managelistings.Click();
 			Thread.Sleep(1000);
 
 			// Save the last page number

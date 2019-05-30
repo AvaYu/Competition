@@ -61,7 +61,7 @@ namespace MarsFramework
 			public void DeleteLastSkill()
 			{
 				// Creates a toggle for the given test, adds all log events under it    
-				test = extent.StartTest("Delete the last skill");
+				test = extent.StartTest("Delete the last skill page");
 
 				// ManageListings object and delete all of the skill listings on the last page
 				ManageListings obj = new ManageListings();

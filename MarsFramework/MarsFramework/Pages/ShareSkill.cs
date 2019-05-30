@@ -18,42 +18,98 @@ namespace MarsFramework.Pages
 			PageFactory.InitElements(Global.GlobalDefinitions.driver, this);
 		}
 
-		private static void AddNewSkill(string title, string description, string category, string subcategory, string tags, string credit)
+		// Find Share Skill button on Home page
+		[FindsBy(How = How.XPath, Using = "//section[@class='nav-secondary']//a[contains(@class,'button')][contains(text(),'Share Skill')]")]
+		private IWebElement Shareskill { get; set; }
+
+		// Find the Title field on Share Skill page
+		[FindsBy(How = How.Name, Using = "title")]
+		private IWebElement Title { get; set; }
+
+		// Find the the Description field on Share Skill page
+		[FindsBy(How = How.Name, Using = "description")]
+		private IWebElement Description { get; set; }
+
+		// Find the Category on Share Skill page
+		[FindsBy(How = How.Name, Using = "categoryId")]
+		private IWebElement Category { get; set; }
+
+		// Find the Subcategory on Share Skill page
+		[FindsBy(How = How.Name, Using = "subcategoryId")]
+		private IWebElement Subcategory { get; set; }
+
+		// Find the Tags field on Share Skill page
+		[FindsBy(How = How.XPath, Using = "(//input[@type='text'][@placeholder='Add new tag'])[1]")]
+		private IWebElement Tags { get; set; }
+
+		// Find the Service Type field and tick One-off service option
+		[FindsBy(How = How.XPath, Using = "//input[@name='serviceType'][@value='1']")]
+		private IWebElement ServiceType { get; set; }
+
+		// Find the Location Type field and tick On-site option
+		[FindsBy(How = How.XPath, Using = "//input[@name='locationType'][@value='0']")]
+		private IWebElement LocationType { get; set; }
+
+		// Find the Start date of Available days field
+		[FindsBy(How = How.XPath, Using = "//input[@placeholder='Start date']")]
+		private IWebElement Startdate { get; set; }
+
+		// Find the End date of Available days field
+		[FindsBy(How = How.XPath, Using = "//input[@placeholder='End date']")]
+		private IWebElement Enddate { get; set; }
+
+		// Find the Save button
+		[FindsBy(How = How.XPath, Using = "//input[@type='button'][@value='Save']")]
+		private IWebElement Save { get; set; }
+
+		// Find the Skill Trade field
+		[FindsBy(How = How.XPath, Using = "//input[@name='skillTrades'][@value='false']")]
+		private IWebElement SkillTrade { get; set; }
+
+		// Find the Credit field
+		[FindsBy(How = How.Name, Using = "charge")]
+		private IWebElement Credit { get; set; }
+
+		// Find the Active field
+		[FindsBy(How = How.XPath, Using = "//input[@name='isActive'][@value='false']")]
+		private IWebElement Active { get; set; }
+
+		internal void AddNewSkill(string title, string description, string category, string subcategory, string tags, string credit)
 		{
-			// Click on the Share Skill button
-			GlobalDefinitions.driver.FindElement(By.XPath("//section[@class='nav-secondary']//a[contains(@class,'button')][contains(text(),'Share Skill')]")).Click();
+			// Click on the Share Skill button on Home page
+			Shareskill.Click();
+			Thread.Sleep(1000);
 
 			// Wait for fields to load
 			Thread.Sleep(1000);
 
 			// Input information into the Title field
-			GlobalDefinitions.driver.FindElement(By.Name("title")).SendKeys(title);
+			Title.SendKeys(title);
 
 			// Input information into the Description field
-			GlobalDefinitions.driver.FindElement(By.Name("description")).SendKeys(description);
+			Description.SendKeys(description);
 
 			// Choose Category
-			GlobalDefinitions.driver.FindElement(By.Name("categoryId")).SendKeys(category);
+			Category.SendKeys(category);
 
 			// Choose Subcategory
-			GlobalDefinitions.driver.FindElement(By.Name("subcategoryId")).SendKeys(subcategory);
+			Subcategory.SendKeys(subcategory);
 
 			// Input information into the Tags field and press Enter key
-			IWebElement tag = GlobalDefinitions.driver.FindElement(By.XPath("(//input[@type='text'][@placeholder='Add new tag'])[1]"));
-			tag.SendKeys(tags);
-			tag.SendKeys(Keys.Enter);
+			Tags.SendKeys(tags);
+			Tags.SendKeys(Keys.Enter);
 
 			// Tick One-off service option of Service Type
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='serviceType'][@value='1']")).Click();
+			ServiceType.Click();
 
 			// Tick On-site option of Location Type
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='locationType'][@value='0']")).Click();
+			LocationType.Click();
 
 			// Set Start date and End date of Available days
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@placeholder='Start date']")).SendKeys("01-06-2019");
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@placeholder='End date']")).SendKeys("30-06-2019");
+			Startdate.SendKeys("01-06-2019");
+			Enddate.SendKeys("30-06-2019");
 
-			// Tick all weekdays and choose Start time and End time of Available days
+			// Tick all weekdays, set Start time as 9:00 and End time as 17:00
 
 			for (int i = 1; i <= 5; i++)
 			{
@@ -63,18 +119,16 @@ namespace MarsFramework.Pages
 			}
 
 			// Tick Credit option of Skill Trade
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='skillTrades'][@value='false']")).Click();
+			SkillTrade.Click();
 
 			// Input number into price field
-			IWebElement creditprice = GlobalDefinitions.driver.FindElement(By.Name("charge"));
-			creditprice.SendKeys(credit);
+			Credit.SendKeys(credit);
 
 			// Tick Hidden option of Active
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@name='isActive'][@value='false']")).Click();
+			Active.Click();
 
 			// Click on the Save button
-			GlobalDefinitions.driver.FindElement(By.XPath("//input[@type='button'][@value='Save']")).Click();
-
+			Save.Click();
 			Thread.Sleep(500);
 		}
 
